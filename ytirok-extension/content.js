@@ -270,7 +270,9 @@ function startMainLoop() {
 
         if (!meetingActive) {
             aloneTimerStarted = false;
+            aloneGreetingShown = false;
             battleTimerStarted = false;
+            battleReminderShown = false;
             stopPeriodicReminder();
             return;
         }

@@ -13,7 +13,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://telemost.yandex.ru/*"],
+      "matches": ["https://telemost.yandex.ru/*", "https://telemost.360.yandex.ru/*"],
       "js": ["defaults.js", "content.js"],
       "css": ["styles.css"]
     }
