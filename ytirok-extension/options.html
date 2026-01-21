@@ -24,6 +24,16 @@
                 <span>сек</span>
             </div>
         </div>
+
+        <div class="field checkbox-field">
+            <input type="checkbox" id="showAloneGreeting" checked>
+            <label for="showAloneGreeting">Показывать приветствие</label>
+        </div>
+
+        <div class="field checkbox-field">
+            <input type="checkbox" id="autoStartRecording" checked>
+            <label for="autoStartRecording">Инициировать запись при клике на уведомление</label>
+        </div>
     </section>
 
     <section>
@@ -64,9 +74,99 @@
         </div>
     </section>
 
+    <section>
+        <div class="field checkbox-field">
+            <input type="checkbox" id="waitingRoomNotificationEnabled" checked>
+            <label for="waitingRoomNotificationEnabled">Звуковые уведомления о комнате ожидания</label>
+        </div>
+
+        <div class="field radio-field" id="waitingRoomModeField">
+            <label>Режим уведомлений</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="waitingRoomMode" value="infinite" id="waitingRoomModeInfinite" checked>
+                    <span>Бесконечный</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="waitingRoomMode" value="finite" id="waitingRoomModeFinite">
+                    <span>Конечный</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="field" id="waitingRoomCountField">
+            <label for="waitingRoomNotificationCount">Количество повторений</label>
+            <div class="input-group">
+                <input type="number" id="waitingRoomNotificationCount" min="1" max="100" value="5">
+                <span>раз</span>
+            </div>
+        </div>
+
+        <div class="field" id="waitingRoomIntervalField">
+            <label for="waitingRoomNotificationInterval">Интервал повторения</label>
+            <div class="input-group">
+                <input type="number" id="waitingRoomNotificationInterval" min="1" max="120" value="15">
+                <span>сек</span>
+            </div>
+        </div>
+    </section>
+
+    <details class="advanced-settings">
+        <summary>Расширенные настройки</summary>
+        <section>
+            <div class="field">
+                <label for="selectorMoreButton">Селектор кнопки "Ещё"</label>
+                <input type="text" id="selectorMoreButton" class="text-input" value='button[title="Ещё"]'>
+            </div>
+
+            <div class="field">
+                <label for="selectorRecordOption">Селектор опции записи</label>
+                <input type="text" id="selectorRecordOption" class="text-input" value='[title="Записать на Яндекс Диск"]'>
+            </div>
+
+            <div class="field">
+                <label for="selectorEndCallButton">Селектор кнопки выхода (по классу)</label>
+                <input type="text" id="selectorEndCallButton" class="text-input" value='button[class*="endCallButton"]'>
+            </div>
+
+            <div class="field">
+                <label for="selectorExitMeetingButton">Селектор кнопки выхода (по title)</label>
+                <input type="text" id="selectorExitMeetingButton" class="text-input" value='button[title="Выйти из встречи"]'>
+            </div>
+
+            <div class="field">
+                <label for="selectorWaitingRoomNotification">Селектор уведомления комнаты ожидания</label>
+                <input type="text" id="selectorWaitingRoomNotification" class="text-input" value='.waitingRoomNotification_XcdCf, [class*="waitingRoomNotification"]'>
+            </div>
+
+            <div class="field">
+                <label for="textAloneUser">Текст для определения одиночества</label>
+                <input type="text" id="textAloneUser" class="text-input" value="Чтобы пригласить других участников">
+            </div>
+
+            <div class="field">
+                <label for="textWaitingRoom">Подстрока текста комнаты ожидания</label>
+                <input type="text" id="textWaitingRoom" class="text-input" value="в комнате ожидания">
+            </div>
+
+            <button id="resetAdvanced" class="reset-btn">Сбросить к умолчаниям</button>
+        </section>
+    </details>
+
+    <button id="resetAll" class="reset-all-btn">Сбросить все настройки</button>
+
+    <div id="resetConfirm" class="reset-confirm" style="display: none;">
+        <p>Вы уверены, что хотите сбросить ВСЕ настройки?</p>
+        <div class="reset-confirm-buttons">
+            <button id="resetConfirmYes" class="reset-confirm-yes">Да, сбросить</button>
+            <button id="resetConfirmNo" class="reset-confirm-no">Отмена</button>
+        </div>
+    </div>
+
     <div class="status" id="status"></div>
 
     <footer>
+        <div class="version" id="version"></div>
         <a href="https://t.me/toolatetolearn" target="_blank">@toolatetolearn</a>
     </footer>
 

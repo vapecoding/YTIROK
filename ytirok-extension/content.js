@@ -48,6 +48,9 @@ let battleTimerStarted = false;
 let battleReminderShown = false;
 let periodicTimerId = null;
 let periodicShownCount = 0;
+let waitingRoomNotificationTimerId = null;
+let waitingRoomNotificationCount = 0;
+let waitingRoomActive = false;
 
 // Загружаем настройки
 chrome.storage.sync.get(DEFAULTS, (data) => {
@@ -63,6 +66,18 @@ chrome.storage.onChanged.addListener((changes) => {
     // Перезапуск периодического таймера если изменились настройки
     if (changes.periodicEnabled || changes.periodicInterval) {
         restartPeriodicReminder();
+    }
+    // Перезапуск уведомлений комнаты ожидания если изменились настройки
+    if (changes.waitingRoomNotificationEnabled ||
+        changes.waitingRoomNotificationMode ||
+        changes.waitingRoomNotificationInterval) {
+        if (waitingRoomActive) {
+            if (settings.waitingRoomNotificationEnabled) {
+                startWaitingRoomNotifications();
+            } else {
+                stopWaitingRoomNotifications();
+            }
+        }
     }
 });
 
@@ -93,6 +108,9 @@ function showWaitingGreeting() {
     refreshBtn.className = 'ytirok-refresh';
     refreshBtn.innerHTML = '↻';
     refreshBtn.onclick = () => {
+        // Проигрываем звук для теста
+        playNotificationSound();
+
         container.querySelector('.ytirok-text').textContent = random(WAITING_TEXTS);
         container.querySelector('.ytirok-btn-neutral').textContent = random(WAITING_BUTTONS);
         refreshBtn.style.transform = 'rotate(360deg)';
@@ -108,6 +126,29 @@ function showWaitingGreeting() {
     container.querySelector('.ytirok-btn-neutral').onclick = () => removeToast(false);
 
     aloneGreetingShown = true;
+}
+
+function clickRecordButton() {
+    try {
+        if (!settings.autoStartRecording) return false;
+
+        const moreButtons = document.querySelectorAll(settings.selectorMoreButton);
+        if (moreButtons.length === 0) return false;
+
+        const moreButton = moreButtons[moreButtons.length - 1];
+        moreButton.click();
+
+        setTimeout(() => {
+            const recordOption = document.querySelector(settings.selectorRecordOption);
+            if (recordOption) {
+                recordOption.click();
+            }
+        }, 200);
+
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 function showBattleReminder() {
@@ -127,6 +168,7 @@ function showBattleReminder() {
 
     container.querySelector('.ytirok-btn-secondary').onclick = () => removeToast(true);
     container.querySelector('.ytirok-btn-primary').onclick = () => {
+        clickRecordButton();
         removeToast(false);
         if (settings.doubleCheckEnabled) {
             setTimeout(() => {
@@ -152,12 +194,16 @@ function showDoubleCheck() {
 
     document.body.appendChild(container);
 
-    container.querySelectorAll('.ytirok-btn').forEach(btn => {
-        btn.onclick = () => {
-            removeToast(false);
-            startPeriodicReminder();
-        };
-    });
+    container.querySelector('.ytirok-btn-warning-primary').onclick = () => {
+        removeToast(false);
+        startPeriodicReminder();
+    };
+
+    container.querySelector('.ytirok-btn-warning-secondary').onclick = () => {
+        clickRecordButton();
+        removeToast(false);
+        startPeriodicReminder();
+    };
 }
 
 const MINI_POSITIONS = ['bottom', 'top', 'left', 'right'];
@@ -251,13 +297,124 @@ function removeToast(suppress) {
 // === ДЕТЕКЦИЯ ===
 function isMeetingActive() {
     if (!window.location.href.includes('/j/')) return false;
-    const btnByTitle = document.querySelector('button[title="Выйти из встречи"]');
-    const btnByClass = document.querySelector('button[class*="endCallButton"]');
+    const btnByTitle = document.querySelector(settings.selectorExitMeetingButton);
+    const btnByClass = document.querySelector(settings.selectorEndCallButton);
     return !!(btnByTitle || btnByClass);
 }
 
 function isUserAlone() {
-    return document.body.innerText.includes("Чтобы пригласить других участников");
+    return document.body.innerText.includes(settings.textAloneUser);
+}
+
+function isWaitingRoomActive() {
+    // Проверяем наличие уведомления о комнате ожидания по классу
+    const waitingRoomNotification = document.querySelector(settings.selectorWaitingRoomNotification);
+    if (waitingRoomNotification) return true;
+
+    // Альтернативная проверка по тексту
+    return document.body.innerText.includes(settings.textWaitingRoom);
+}
+
+// === ЗВУКОВЫЕ УВЕДОМЛЕНИЯ ===
+let audioContext = null;
+
+function playNotificationSound() {
+    try {
+        // Создаем аудио контекст один раз
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        // Если контекст в состоянии suspended, пытаемся возобновить
+        if (audioContext.state === 'suspended') {
+            audioContext.resume().then(() => playSound());
+        } else {
+            playSound();
+        }
+
+        function playSound() {
+            // Первый звук
+            const oscillator1 = audioContext.createOscillator();
+            const gainNode1 = audioContext.createGain();
+
+            oscillator1.connect(gainNode1);
+            gainNode1.connect(audioContext.destination);
+
+            oscillator1.frequency.value = 800;
+            oscillator1.type = 'sine';
+
+            gainNode1.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+            oscillator1.start(audioContext.currentTime);
+            oscillator1.stop(audioContext.currentTime + 0.5);
+
+            // Второй звук (через 0.5 секунды)
+            const oscillator2 = audioContext.createOscillator();
+            const gainNode2 = audioContext.createGain();
+
+            oscillator2.connect(gainNode2);
+            gainNode2.connect(audioContext.destination);
+
+            oscillator2.frequency.value = 800;
+            oscillator2.type = 'sine';
+
+            const secondBeepStart = audioContext.currentTime + 1.0; // Пауза 0.5 сек
+            gainNode2.gain.setValueAtTime(0.3, secondBeepStart);
+            gainNode2.gain.exponentialRampToValueAtTime(0.01, secondBeepStart + 0.5);
+
+            oscillator2.start(secondBeepStart);
+            oscillator2.stop(secondBeepStart + 0.5);
+        }
+    } catch (error) {
+        // Тихо игнорируем ошибки
+    }
+}
+
+function startWaitingRoomNotifications() {
+    if (!settings.waitingRoomNotificationEnabled) return;
+
+    stopWaitingRoomNotifications();
+    waitingRoomNotificationCount = 0;
+    waitingRoomActive = true;
+
+    // Первое уведомление сразу
+    playNotificationSound();
+    waitingRoomNotificationCount++;
+
+    // Если конечный режим и уже достигли лимита
+    if (settings.waitingRoomNotificationMode === 'finite' &&
+        waitingRoomNotificationCount >= settings.waitingRoomNotificationCount) {
+        return;
+    }
+
+    // Устанавливаем таймер для повторяющихся уведомлений
+    const intervalMs = settings.waitingRoomNotificationInterval * 1000;
+
+    waitingRoomNotificationTimerId = setInterval(() => {
+        if (!isWaitingRoomActive() || !isMeetingActive()) {
+            stopWaitingRoomNotifications();
+            return;
+        }
+
+        playNotificationSound();
+        waitingRoomNotificationCount++;
+
+        // Если конечный режим, проверяем лимит
+        if (settings.waitingRoomNotificationMode === 'finite' &&
+            waitingRoomNotificationCount >= settings.waitingRoomNotificationCount) {
+            stopWaitingRoomNotifications();
+        }
+    }, intervalMs);
+}
+
+function stopWaitingRoomNotifications() {
+    if (waitingRoomNotificationTimerId) {
+        clearInterval(waitingRoomNotificationTimerId);
+        waitingRoomNotificationTimerId = null;
+    }
+    waitingRoomActive = false;
+    waitingRoomNotificationCount = 0;
 }
 
 // === ГЛАВНЫЙ ЦИКЛ ===
@@ -267,6 +424,7 @@ function startMainLoop() {
 
         const meetingActive = isMeetingActive();
         const alone = isUserAlone();
+        const waitingRoom = isWaitingRoomActive();
 
         if (!meetingActive) {
             aloneTimerStarted = false;
@@ -274,18 +432,26 @@ function startMainLoop() {
             battleTimerStarted = false;
             battleReminderShown = false;
             stopPeriodicReminder();
+            stopWaitingRoomNotifications();
             return;
+        }
+
+        // Обработка комнаты ожидания
+        if (waitingRoom && !waitingRoomActive) {
+            startWaitingRoomNotifications();
+        } else if (!waitingRoom && waitingRoomActive) {
+            stopWaitingRoomNotifications();
         }
 
         if (alone) {
             battleTimerStarted = false;
             stopPeriodicReminder();
 
-            if (!aloneGreetingShown && !aloneTimerStarted && !battleReminderShown) {
+            if (!aloneGreetingShown && !aloneTimerStarted && !battleReminderShown && settings.showAloneGreeting) {
                 aloneTimerStarted = true;
 
                 setTimeout(() => {
-                    if (isMeetingActive() && isUserAlone() && !aloneGreetingShown && !battleReminderShown) {
+                    if (isMeetingActive() && isUserAlone() && !aloneGreetingShown && !battleReminderShown && settings.showAloneGreeting) {
                         showWaitingGreeting();
                     }
                 }, settings.aloneDelay * 1000);

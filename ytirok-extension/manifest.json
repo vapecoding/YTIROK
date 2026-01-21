@@ -1,12 +1,15 @@
 {
   "manifest_version": 3,
   "name": "YTIROK (Yandex Telemost Is Recording OK)",
-  "version": "1.0",
+  "version": "1.5",
   "description": "Напоминалка о записи для Яндекс.Телемоста",
   "icons": {
     "128": "icon128.png"
   },
   "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "options_ui": {
     "page": "options.html",
     "open_in_tab": false
