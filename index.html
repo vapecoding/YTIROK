@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YTIROK — Ваш помощник для видеовстреч</title>
+    <style>
+        :root { --main-red: #e74c3c; --bg-dark: #2c3e50; --text-light: #ecf0f1; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        header { background: var(--bg-dark); color: var(--text-light); padding: 60px 20px; text-align: center; }
+        .logo { width: 80px; height: 80px; background: var(--main-red); border-radius: 50%; margin: 0 auto 20px; position: relative; box-shadow: 0 0 20px rgba(231, 76, 60, 0.5); }
+        h1 { margin: 0; font-size: 2.5em; letter-spacing: 2px; }
+        .tagline { font-size: 1.2em; opacity: 0.9; }
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .btn { display: inline-block; background: var(--main-red); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: transform 0.2s; }
+        .btn:hover { transform: scale(1.05); }
+        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0; }
+        .feature-card { border: 1px solid #eee; padding: 20px; border-radius: 12px; }
+        .changelog { background: #f9f9f9; padding: 20px; border-radius: 12px; font-size: 0.9em; }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8em; color: #7f8c8d; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo"></div>
+    <h1>YTIROK</h1>
+    <p class="tagline">Умная напоминалка о записи для Telemost</p>
+    <br>
+    <a href="https://chromewebstore.google.com/detail/akjsdhfkjashdfkjahsdfkjhasdkjf" class="btn">Установить расширение</a>
+</header>
+
+<div class="container">
+    <div class="features">
+        <div class="feature-card">
+            <h3>🔴 Наглядная индикация</h3>
+            <p>Пульсирующий логотип в интерфейсе подскажет, если запись встречи не была включена вручную.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🧠 Умный режим</h3>
+            <p>Расширение понимает, когда вы находитесь на встрече один, и не беспокоит лишними уведомлениями.</p>
+        </div>
+    </div>
+
+    <div class="changelog">
+        <h3>Что нового в версии 1.5</h3>
+        <ul>
+            <li><strong>Улучшенная настраиваемость:</strong> Настройка через CSS-селекторы для адаптации к изменениям интерфейса.</li>
+            <li><strong>Стабильность:</strong> Устранены жестко заданные значения, миграция настроек при обновлении.</li>
+            <li><strong>Интерфейс:</strong> Быстрый сброс настроек и отображение текущей версии.</li>
+        </ul>
+    </div>
+</div>
+
+<footer>
+    <p>Проект разработан с использованием AI (Vapecoding)</p>
+    <p><strong>Отказ от ответственности:</strong> YTIROK является независимым инструментом. Мы не связаны с компанией ООО «ЯНДЕКС», не являемся их официальным подразделением и не одобрены ими.</p>
+    <p><a href="https://github.com/vapecoding/YTIROK/blob/master/PRIVACY.MD" style="color: #7f8c8d;">Политика конфиденциальности</a></p>
+</footer>
+
+</body>
+</html>
