@@ -70,7 +70,7 @@ chrome.storage.onChanged.addListener((changes) => {
 function createToastHTML(text, buttonsHtml) {
     return `
         <div class="ytrok-header">
-            <div class="ytrok-logo" title="Yandex Telemost Record OK">${LOGO_SVG}</div>
+            <div class="ytrok-logo" title="Yandex Telemost Is Recording OK">${LOGO_SVG}</div>
         </div>
         <p class="ytrok-text">${text}</p>
         <div class="ytrok-buttons">${buttonsHtml}</div>

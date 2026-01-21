@@ -1,4 +1,4 @@
-# YTRok (Yandex Telemost Record OK)
+# YTIROK (Yandex Telemost Is Recording OK)
 
 > Chrome-расширение для Яндекс.Телемоста — напоминает включить запись встречи
 
