@@ -1,28 +1,19 @@
 // === ASSETS ===
 const LOGO_SVG = `
-<svg xmlns="http://www.w3.org/2000/svg" width="130" height="32" viewBox="0 0 130 32" fill="none">
-  <text x="0" y="24" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="26" fill="#2c3e50" letter-spacing="-1">YTR   K</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="32" viewBox="0 0 140 32" fill="none">
+  <text x="0" y="24" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="26" fill="#2c3e50" letter-spacing="-1">YTIR</text>
   
-  <g transform="translate(58, 15)">
+  <g transform="translate(68, 15)">
     <circle cx="0" cy="0" r="8" fill="#e74c3c" opacity="0.4">
       <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
       <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
     </circle>
     <circle cx="0" cy="0" r="6" fill="#e74c3c"/>
   </g>
+
+  <text x="82" y="24" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="800" font-size="26" fill="#2c3e50">K</text>
 </svg>
 `;
-
-// === КОНФИГУРАЦИЯ ===
-const DEFAULTS = {
-    aloneDelay: 10,
-    battleDelay: 20,
-    doubleCheckEnabled: true,
-    doubleCheckDelay: 30,
-    periodicEnabled: false,
-    periodicInterval: 300,
-    periodicCount: 3
-};
 
 const WAITING_TEXTS = [
     "Я позабочусь и не дам тебе забыть включить запись!",
@@ -59,12 +50,9 @@ let periodicTimerId = null;
 let periodicShownCount = 0;
 
 // Загружаем настройки
-console.log('🚀 YTRok: Script loaded, loading settings...');
 chrome.storage.sync.get(DEFAULTS, (data) => {
-    console.log('⚙️ YTRok: Settings loaded:', data);
     settings = data;
     startMainLoop();
-    console.log('✅ YTRok: Main loop started');
 });
 
 // Слушаем изменения настроек
@@ -175,28 +163,17 @@ function showDoubleCheck() {
 const MINI_POSITIONS = ['bottom', 'top', 'left', 'right'];
 
 function showPeriodicReminder() {
-    console.log('🔄 YTRok: showPeriodicReminder called');
-    console.log(`   - toast exists: ${!!document.getElementById('ytrok-toast')}`);
-    console.log(`   - mini exists: ${!!document.getElementById('ytrok-mini')}`);
-    console.log(`   - meeting active: ${isMeetingActive()}`);
-    console.log(`   - alone: ${isUserAlone()}`);
-
     if (document.getElementById('ytrok-toast')) return;
     if (document.getElementById('ytrok-mini')) return;
     if (!isMeetingActive() || isUserAlone()) return;
 
-    console.log('✅ YTRok: Showing periodic mini reminder!');
-
     periodicShownCount++;
-    console.log(`   - shown count: ${periodicShownCount}/${settings.periodicCount}`);
 
     if (periodicShownCount >= settings.periodicCount) {
-        console.log('   - max count reached, stopping periodic');
         stopPeriodicReminder();
     }
 
     const position = random(MINI_POSITIONS);
-    console.log(`   - position: ${position}`);
 
     const mini = document.createElement('div');
     mini.id = 'ytrok-mini';
@@ -231,33 +208,21 @@ function showPeriodicReminder() {
 }
 
 function startPeriodicReminder() {
-    console.log(`🔄 YTRok: startPeriodicReminder called (enabled=${settings.periodicEnabled}, interval=${settings.periodicInterval}min)`);
-    if (!settings.periodicEnabled) {
-        console.log('   - periodic disabled, skipping');
-        return;
-    }
+    if (!settings.periodicEnabled) return;
     stopPeriodicReminder();
     periodicShownCount = 0;
 
-    // TODO: вернуть * 60 после тестов
     const intervalMs = settings.periodicInterval * 1000;
-    console.log(`   - starting interval: ${intervalMs}ms (${settings.periodicInterval}sec - TEST MODE)`);
 
     periodicTimerId = setInterval(() => {
-        console.log('🔄 YTRok: periodic interval fired');
         if (isMeetingActive() && !isUserAlone()) {
             showPeriodicReminder();
-        } else {
-            console.log(`   - skipped: meeting=${isMeetingActive()}, alone=${isUserAlone()}`);
         }
     }, intervalMs);
-
-    console.log(`   - timer started with id: ${periodicTimerId}`);
 }
 
 function stopPeriodicReminder() {
     if (periodicTimerId) {
-        console.log(`🛑 YTRok: stopping periodic timer (id=${periodicTimerId})`);
         clearInterval(periodicTimerId);
         periodicTimerId = null;
     }
@@ -296,18 +261,12 @@ function isUserAlone() {
 }
 
 // === ГЛАВНЫЙ ЦИКЛ ===
-let loopLogCounter = 0;
 function startMainLoop() {
     setInterval(() => {
         if (sessionStorage.getItem('ytrok_suppressed') === 'true') return;
 
         const meetingActive = isMeetingActive();
         const alone = isUserAlone();
-
-        // Логируем каждые 5 секунд
-        if (loopLogCounter++ % 5 === 0) {
-            console.log(`🔍 YTRok loop: meeting=${meetingActive}, alone=${alone}, aloneTimer=${aloneTimerStarted}, aloneGreeting=${aloneGreetingShown}, battleReminder=${battleReminderShown}`);
-        }
 
         if (!meetingActive) {
             aloneTimerStarted = false;
@@ -322,10 +281,8 @@ function startMainLoop() {
 
             if (!aloneGreetingShown && !aloneTimerStarted && !battleReminderShown) {
                 aloneTimerStarted = true;
-                console.log(`⏱️ YTRok: Starting alone timer (${settings.aloneDelay}s)...`);
 
                 setTimeout(() => {
-                    console.log(`⏰ YTRok: Alone timer fired! meeting=${isMeetingActive()}, alone=${isUserAlone()}, greeting=${aloneGreetingShown}, battle=${battleReminderShown}`);
                     if (isMeetingActive() && isUserAlone() && !aloneGreetingShown && !battleReminderShown) {
                         showWaitingGreeting();
                     }

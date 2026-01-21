@@ -1,14 +1,3 @@
-// Дефолтные значения
-const DEFAULTS = {
-    aloneDelay: 10,
-    battleDelay: 20,
-    doubleCheckEnabled: true,
-    doubleCheckDelay: 30,
-    periodicEnabled: false,
-    periodicInterval: 300,
-    periodicCount: 3
-};
-
 // Элементы
 const fields = {
     aloneDelay: document.getElementById('aloneDelay'),
@@ -23,7 +12,7 @@ const fields = {
 const doubleCheckDelayField = document.getElementById('doubleCheckDelayField');
 const periodicIntervalField = document.getElementById('periodicIntervalField');
 const periodicCountField = document.getElementById('periodicCountField');
-const status = document.getElementById('status');
+const statusEl = document.getElementById('status');
 
 // Загрузка настроек
 chrome.storage.sync.get(DEFAULTS, (data) => {
@@ -51,8 +40,8 @@ function save() {
     };
 
     chrome.storage.sync.set(data, () => {
-        status.textContent = 'Сохранено!';
-        setTimeout(() => status.textContent = '', 1500);
+        statusEl.textContent = 'Сохранено!';
+        setTimeout(() => statusEl.textContent = '', 1500);
     });
 }
 
