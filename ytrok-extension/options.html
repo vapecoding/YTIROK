@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <h1>YTRok</h1>
+
+    <section>
+        <div class="field">
+            <label for="aloneDelay">Приветствие (один в комнате)</label>
+            <div class="input-group">
+                <input type="number" id="aloneDelay" min="1" max="120" value="10">
+                <span>сек</span>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="battleDelay">Напоминание (появились участники)</label>
+            <div class="input-group">
+                <input type="number" id="battleDelay" min="1" max="120" value="20">
+                <span>сек</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="field checkbox-field">
+            <input type="checkbox" id="doubleCheckEnabled" checked>
+            <label for="doubleCheckEnabled">Контрольная проверка записи</label>
+        </div>
+
+        <div class="field" id="doubleCheckDelayField">
+            <label for="doubleCheckDelay">Через</label>
+            <div class="input-group">
+                <input type="number" id="doubleCheckDelay" min="5" max="120" value="30">
+                <span>сек</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="field checkbox-field">
+            <input type="checkbox" id="periodicEnabled">
+            <label for="periodicEnabled">Периодические напоминания</label>
+        </div>
+
+        <div class="field" id="periodicIntervalField">
+            <label for="periodicInterval">Интервал</label>
+            <div class="input-group">
+                <input type="number" id="periodicInterval" min="1" max="600" value="300">
+                <span>сек</span>
+            </div>
+        </div>
+
+        <div class="field" id="periodicCountField">
+            <label for="periodicCount">Количество</label>
+            <div class="input-group">
+                <input type="number" id="periodicCount" min="1" max="20" value="3">
+                <span>раз</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="status" id="status"></div>
+
+    <footer>
+        <a href="https://t.me/toolatetolearn" target="_blank">@toolatetolearn</a>
+    </footer>
+
+    <script src="options.js"></script>
+</body>
+</html>

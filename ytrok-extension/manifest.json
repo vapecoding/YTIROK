@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "YTRok (Yandex Telemost Record OK)",
+  "version": "1.1",
+  "description": "Напоминалка о записи для Яндекс.Телемоста",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "permissions": ["storage"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://telemost.yandex.ru/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}

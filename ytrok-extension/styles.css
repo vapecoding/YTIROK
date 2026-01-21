@@ -1,0 +1,209 @@
+/* YTRok - Стили уведомлений */
+
+@keyframes ytrok-slideIn {
+    from { transform: translateX(120%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Анимации для мини-напоминалки с учётом центрирования */
+@keyframes ytrok-mini-fromBottom {
+    from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes ytrok-mini-fromTop {
+    from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes ytrok-mini-fromLeft {
+    from { transform: translateY(-50%) translateX(-100%); opacity: 0; }
+    to { transform: translateY(-50%) translateX(0); opacity: 1; }
+}
+
+@keyframes ytrok-mini-fromRight {
+    from { transform: translateY(-50%) translateX(100%); opacity: 0; }
+    to { transform: translateY(-50%) translateX(0); opacity: 1; }
+}
+
+#ytrok-toast {
+    position: fixed;
+    top: 80px;
+    right: 24px;
+    width: 340px;
+    background: #ffffff;
+    border-left: 6px solid #e74c3c;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 2147483647;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: ytrok-slideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: auto;
+}
+
+#ytrok-toast.ytrok-warning {
+    border-left-color: #f39c12;
+}
+
+#ytrok-toast.ytrok-neutral {
+    border-left-color: #3498db;
+}
+
+#ytrok-toast .ytrok-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+#ytrok-toast .ytrok-logo {
+    width: 120px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+#ytrok-toast .ytrok-refresh {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #3498db;
+    padding: 4px;
+    transition: transform 0.3s ease;
+}
+
+#ytrok-toast .ytrok-refresh:hover {
+    color: #2980b9;
+}
+
+#ytrok-toast .ytrok-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #bdc3c7;
+    padding: 0;
+}
+
+#ytrok-toast .ytrok-text {
+    margin: 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#ytrok-toast .ytrok-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+#ytrok-toast .ytrok-btn {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#ytrok-toast .ytrok-btn-primary {
+    background: #e74c3c;
+    color: white;
+}
+
+#ytrok-toast .ytrok-btn-secondary {
+    background: #ecf0f1;
+    color: #7f8c8d;
+}
+
+#ytrok-toast .ytrok-btn-warning-primary {
+    background: #27ae60;
+    color: white;
+}
+
+#ytrok-toast .ytrok-btn-warning-secondary {
+    background: #f39c12;
+    color: white;
+}
+
+#ytrok-toast .ytrok-btn-warning-tertiary {
+    background: #ecf0f1;
+    color: #7f8c8d;
+}
+
+#ytrok-toast .ytrok-btn-neutral {
+    background: #3498db;
+    color: white;
+    width: 100%;
+}
+
+/* Мини-напоминалка */
+#ytrok-mini {
+    position: fixed;
+    background: #ffffff;
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2147483647;
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    border-left: 4px solid #3498db;
+}
+
+/* Позиции мини-напоминалки */
+#ytrok-mini.ytrok-pos-bottom {
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: ytrok-mini-fromBottom 0.3s ease-out;
+}
+
+#ytrok-mini.ytrok-pos-top {
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: ytrok-mini-fromTop 0.3s ease-out;
+}
+
+#ytrok-mini.ytrok-pos-left {
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: ytrok-mini-fromLeft 0.3s ease-out;
+}
+
+#ytrok-mini.ytrok-pos-right {
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: ytrok-mini-fromRight 0.3s ease-out;
+}
+
+#ytrok-mini .ytrok-mini-close {
+    background: none;
+    border: none;
+    color: #bdc3c7;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+#ytrok-mini .ytrok-mini-close:hover {
+    color: #7f8c8d;
+}
