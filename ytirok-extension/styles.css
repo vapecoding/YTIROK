@@ -1,32 +1,32 @@
 /* YTRok - Стили уведомлений */
 
-@keyframes ytrok-slideIn {
+@keyframes ytirok-slideIn {
     from { transform: translateX(120%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
 
 /* Анимации для мини-напоминалки с учётом центрирования */
-@keyframes ytrok-mini-fromBottom {
+@keyframes ytirok-mini-fromBottom {
     from { transform: translateX(-50%) translateY(100%); opacity: 0; }
     to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
-@keyframes ytrok-mini-fromTop {
+@keyframes ytirok-mini-fromTop {
     from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
     to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
-@keyframes ytrok-mini-fromLeft {
+@keyframes ytirok-mini-fromLeft {
     from { transform: translateY(-50%) translateX(-100%); opacity: 0; }
     to { transform: translateY(-50%) translateX(0); opacity: 1; }
 }
 
-@keyframes ytrok-mini-fromRight {
+@keyframes ytirok-mini-fromRight {
     from { transform: translateY(-50%) translateX(100%); opacity: 0; }
     to { transform: translateY(-50%) translateX(0); opacity: 1; }
 }
 
-#ytrok-toast {
+#ytirok-toast {
     position: fixed;
     top: 80px;
     right: 24px;
@@ -41,33 +41,33 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    animation: ytrok-slideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: ytirok-slideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     pointer-events: auto;
 }
 
-#ytrok-toast.ytrok-warning {
+#ytirok-toast.ytirok-warning {
     border-left-color: #f39c12;
 }
 
-#ytrok-toast.ytrok-neutral {
+#ytirok-toast.ytirok-neutral {
     border-left-color: #3498db;
 }
 
-#ytrok-toast .ytrok-header {
+#ytirok-toast .ytirok-header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 4px;
 }
 
-#ytrok-toast .ytrok-logo {
+#ytirok-toast .ytirok-logo {
     width: 120px;
     height: 32px;
     display: flex;
     align-items: center;
 }
 
-#ytrok-toast .ytrok-refresh {
+#ytirok-toast .ytirok-refresh {
     margin-left: auto;
     background: none;
     border: none;
@@ -78,11 +78,11 @@
     transition: transform 0.3s ease;
 }
 
-#ytrok-toast .ytrok-refresh:hover {
+#ytirok-toast .ytirok-refresh:hover {
     color: #2980b9;
 }
 
-#ytrok-toast .ytrok-close {
+#ytirok-toast .ytirok-close {
     background: none;
     border: none;
     font-size: 24px;
@@ -92,21 +92,21 @@
     padding: 0;
 }
 
-#ytrok-toast .ytrok-text {
+#ytirok-toast .ytirok-text {
     margin: 0;
     color: #555;
     font-size: 14px;
     line-height: 1.5;
 }
 
-#ytrok-toast .ytrok-buttons {
+#ytirok-toast .ytirok-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 4px;
 }
 
-#ytrok-toast .ytrok-btn {
+#ytirok-toast .ytirok-btn {
     flex: 1;
     border: none;
     padding: 10px;
@@ -116,39 +116,39 @@
     transition: 0.2s;
 }
 
-#ytrok-toast .ytrok-btn-primary {
+#ytirok-toast .ytirok-btn-primary {
     background: #e74c3c;
     color: white;
 }
 
-#ytrok-toast .ytrok-btn-secondary {
+#ytirok-toast .ytirok-btn-secondary {
     background: #ecf0f1;
     color: #7f8c8d;
 }
 
-#ytrok-toast .ytrok-btn-warning-primary {
+#ytirok-toast .ytirok-btn-warning-primary {
     background: #27ae60;
     color: white;
 }
 
-#ytrok-toast .ytrok-btn-warning-secondary {
+#ytirok-toast .ytirok-btn-warning-secondary {
     background: #f39c12;
     color: white;
 }
 
-#ytrok-toast .ytrok-btn-warning-tertiary {
+#ytirok-toast .ytirok-btn-warning-tertiary {
     background: #ecf0f1;
     color: #7f8c8d;
 }
 
-#ytrok-toast .ytrok-btn-neutral {
+#ytirok-toast .ytirok-btn-neutral {
     background: #3498db;
     color: white;
     width: 100%;
 }
 
 /* Мини-напоминалка */
-#ytrok-mini {
+#ytirok-mini {
     position: fixed;
     background: #ffffff;
     color: #333;
@@ -166,35 +166,35 @@
 }
 
 /* Позиции мини-напоминалки */
-#ytrok-mini.ytrok-pos-bottom {
+#ytirok-mini.ytirok-pos-bottom {
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    animation: ytrok-mini-fromBottom 0.3s ease-out;
+    animation: ytirok-mini-fromBottom 0.3s ease-out;
 }
 
-#ytrok-mini.ytrok-pos-top {
+#ytirok-mini.ytirok-pos-top {
     top: 24px;
     left: 50%;
     transform: translateX(-50%);
-    animation: ytrok-mini-fromTop 0.3s ease-out;
+    animation: ytirok-mini-fromTop 0.3s ease-out;
 }
 
-#ytrok-mini.ytrok-pos-left {
+#ytirok-mini.ytirok-pos-left {
     left: 24px;
     top: 50%;
     transform: translateY(-50%);
-    animation: ytrok-mini-fromLeft 0.3s ease-out;
+    animation: ytirok-mini-fromLeft 0.3s ease-out;
 }
 
-#ytrok-mini.ytrok-pos-right {
+#ytirok-mini.ytirok-pos-right {
     right: 24px;
     top: 50%;
     transform: translateY(-50%);
-    animation: ytrok-mini-fromRight 0.3s ease-out;
+    animation: ytirok-mini-fromRight 0.3s ease-out;
 }
 
-#ytrok-mini .ytrok-mini-close {
+#ytirok-mini .ytirok-mini-close {
     background: none;
     border: none;
     color: #bdc3c7;
@@ -204,6 +204,6 @@
     line-height: 1;
 }
 
-#ytrok-mini .ytrok-mini-close:hover {
+#ytirok-mini .ytirok-mini-close:hover {
     color: #7f8c8d;
 }

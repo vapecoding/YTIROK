@@ -69,64 +69,64 @@ chrome.storage.onChanged.addListener((changes) => {
 // === UI ===
 function createToastHTML(text, buttonsHtml) {
     return `
-        <div class="ytrok-header">
-            <div class="ytrok-logo" title="Yandex Telemost Is Recording OK">${LOGO_SVG}</div>
+        <div class="ytirok-header">
+            <div class="ytirok-logo" title="Yandex Telemost Is Recording OK">${LOGO_SVG}</div>
         </div>
-        <p class="ytrok-text">${text}</p>
-        <div class="ytrok-buttons">${buttonsHtml}</div>
+        <p class="ytirok-text">${text}</p>
+        <div class="ytirok-buttons">${buttonsHtml}</div>
     `;
 }
 
 function showWaitingGreeting() {
-    if (document.getElementById('ytrok-toast')) return;
+    if (document.getElementById('ytirok-toast')) return;
 
     const container = document.createElement('div');
-    container.id = 'ytrok-toast';
-    container.className = 'ytrok-neutral';
+    container.id = 'ytirok-toast';
+    container.className = 'ytirok-neutral';
     container.innerHTML = createToastHTML(
         random(WAITING_TEXTS),
-        `<button class="ytrok-btn ytrok-btn-neutral">${random(WAITING_BUTTONS)}</button>`
+        `<button class="ytirok-btn ytirok-btn-neutral">${random(WAITING_BUTTONS)}</button>`
     );
 
     // Добавляем кнопку refresh в хедер
     const refreshBtn = document.createElement('button');
-    refreshBtn.className = 'ytrok-refresh';
+    refreshBtn.className = 'ytirok-refresh';
     refreshBtn.innerHTML = '↻';
     refreshBtn.onclick = () => {
-        container.querySelector('.ytrok-text').textContent = random(WAITING_TEXTS);
-        container.querySelector('.ytrok-btn-neutral').textContent = random(WAITING_BUTTONS);
+        container.querySelector('.ytirok-text').textContent = random(WAITING_TEXTS);
+        container.querySelector('.ytirok-btn-neutral').textContent = random(WAITING_BUTTONS);
         refreshBtn.style.transform = 'rotate(360deg)';
         setTimeout(() => refreshBtn.style.transform = '', 300);
     };
-    container.querySelector('.ytrok-header').insertBefore(
+    container.querySelector('.ytirok-header').insertBefore(
         refreshBtn,
-        container.querySelector('.ytrok-close')
+        container.querySelector('.ytirok-close')
     );
 
     document.body.appendChild(container);
 
-    container.querySelector('.ytrok-btn-neutral').onclick = () => removeToast(false);
+    container.querySelector('.ytirok-btn-neutral').onclick = () => removeToast(false);
 
     aloneGreetingShown = true;
 }
 
 function showBattleReminder() {
-    if (document.getElementById('ytrok-toast')) return;
+    if (document.getElementById('ytirok-toast')) return;
 
     battleReminderShown = true;
 
     const container = document.createElement('div');
-    container.id = 'ytrok-toast';
+    container.id = 'ytirok-toast';
     container.innerHTML = createToastHTML(
         "Коллеги часто забывают про запись. Включим?",
-        `<button class="ytrok-btn ytrok-btn-primary">Включаю</button>
-         <button class="ytrok-btn ytrok-btn-secondary">Не нужна</button>`
+        `<button class="ytirok-btn ytirok-btn-primary">Включаю</button>
+         <button class="ytirok-btn ytirok-btn-secondary">Не нужна</button>`
     );
 
     document.body.appendChild(container);
 
-    container.querySelector('.ytrok-btn-secondary').onclick = () => removeToast(true);
-    container.querySelector('.ytrok-btn-primary').onclick = () => {
+    container.querySelector('.ytirok-btn-secondary').onclick = () => removeToast(true);
+    container.querySelector('.ytirok-btn-primary').onclick = () => {
         removeToast(false);
         if (settings.doubleCheckEnabled) {
             setTimeout(() => {
@@ -139,20 +139,20 @@ function showBattleReminder() {
 }
 
 function showDoubleCheck() {
-    if (document.getElementById('ytrok-toast')) return;
+    if (document.getElementById('ytirok-toast')) return;
 
     const container = document.createElement('div');
-    container.id = 'ytrok-toast';
-    container.className = 'ytrok-warning';
+    container.id = 'ytirok-toast';
+    container.className = 'ytirok-warning';
     container.innerHTML = createToastHTML(
         `Прошло ${settings.doubleCheckDelay} секунд. Индикатор записи точно горит?`,
-        `<button class="ytrok-btn ytrok-btn-warning-primary">Да, всё работает</button>
-         <button class="ytrok-btn ytrok-btn-warning-secondary">Ой, точно, спасибо</button>`
+        `<button class="ytirok-btn ytirok-btn-warning-primary">Да, всё работает</button>
+         <button class="ytirok-btn ytirok-btn-warning-secondary">Ой, точно, спасибо</button>`
     );
 
     document.body.appendChild(container);
 
-    container.querySelectorAll('.ytrok-btn').forEach(btn => {
+    container.querySelectorAll('.ytirok-btn').forEach(btn => {
         btn.onclick = () => {
             removeToast(false);
             startPeriodicReminder();
@@ -163,8 +163,8 @@ function showDoubleCheck() {
 const MINI_POSITIONS = ['bottom', 'top', 'left', 'right'];
 
 function showPeriodicReminder() {
-    if (document.getElementById('ytrok-toast')) return;
-    if (document.getElementById('ytrok-mini')) return;
+    if (document.getElementById('ytirok-toast')) return;
+    if (document.getElementById('ytirok-mini')) return;
     if (!isMeetingActive() || isUserAlone()) return;
 
     periodicShownCount++;
@@ -176,16 +176,16 @@ function showPeriodicReminder() {
     const position = random(MINI_POSITIONS);
 
     const mini = document.createElement('div');
-    mini.id = 'ytrok-mini';
-    mini.className = `ytrok-pos-${position}`;
+    mini.id = 'ytirok-mini';
+    mini.className = `ytirok-pos-${position}`;
     mini.innerHTML = `
         <span>${random(PERIODIC_TEXTS)}</span>
-        <button class="ytrok-mini-close">&times;</button>
+        <button class="ytirok-mini-close">&times;</button>
     `;
 
     document.body.appendChild(mini);
 
-    const closeBtn = mini.querySelector('.ytrok-mini-close');
+    const closeBtn = mini.querySelector('.ytirok-mini-close');
     closeBtn.onclick = () => mini.remove();
 
     // Авто-скрытие через 3 секунды
@@ -236,14 +236,14 @@ function restartPeriodicReminder() {
 }
 
 function removeToast(suppress) {
-    const el = document.getElementById('ytrok-toast');
+    const el = document.getElementById('ytirok-toast');
     if (el) {
         el.style.transform = 'translateX(120%)';
         el.style.transition = 'transform 0.3s ease-in';
         setTimeout(() => el.remove(), 300);
     }
     if (suppress) {
-        sessionStorage.setItem('ytrok_suppressed', 'true');
+        sessionStorage.setItem('ytirok_suppressed', 'true');
         stopPeriodicReminder();
     }
 }
@@ -263,7 +263,7 @@ function isUserAlone() {
 // === ГЛАВНЫЙ ЦИКЛ ===
 function startMainLoop() {
     setInterval(() => {
-        if (sessionStorage.getItem('ytrok_suppressed') === 'true') return;
+        if (sessionStorage.getItem('ytirok_suppressed') === 'true') return;
 
         const meetingActive = isMeetingActive();
         const alone = isUserAlone();
@@ -291,8 +291,8 @@ function startMainLoop() {
             return;
         }
 
-        const existingToast = document.getElementById('ytrok-toast');
-        if (existingToast?.classList.contains('ytrok-neutral')) {
+        const existingToast = document.getElementById('ytirok-toast');
+        if (existingToast?.classList.contains('ytirok-neutral')) {
             removeToast(false);
         }
 
@@ -300,7 +300,7 @@ function startMainLoop() {
             battleTimerStarted = true;
 
             setTimeout(() => {
-                if (isMeetingActive() && !isUserAlone() && sessionStorage.getItem('ytrok_suppressed') !== 'true') {
+                if (isMeetingActive() && !isUserAlone() && sessionStorage.getItem('ytirok_suppressed') !== 'true') {
                     showBattleReminder();
                 }
             }, settings.battleDelay * 1000);
