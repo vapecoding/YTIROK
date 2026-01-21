@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>YTIROK Assets Generator</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; background: #eee; }
+        canvas { border: 1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #2980b9; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #3498db; }
+        .row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h1>Генератор графики для Chrome Store</h1>
+    
+    <div class="row">
+        <div style="text-align: center;">
+            <h3>1. Скриншот (1280x800)</h3>
+            <canvas id="screenCanvas" width="1280" height="800"></canvas>
+            <br><br>
+            <button onclick="download('screenCanvas', 'screenshot_1280x800.png')">⬇ Скачать Скриншот</button>
+        </div>
+
+        <div style="text-align: center;">
+            <h3>2. Плитка (440x280)</h3>
+            <canvas id="promoCanvas" width="440" height="280"></canvas>
+            <br><br>
+            <button onclick="download('promoCanvas', 'promo_440x280.png')">⬇ Скачать Плитку</button>
+        </div>
+    </div>
+
+    <script>
+        function draw() {
+            // --- РИСУЕМ СКРИНШОТ ---
+            const ctxS = document.getElementById('screenCanvas').getContext('2d');
+            
+            // Фон (имитация интерфейса Яндекса)
+            ctxS.fillStyle = "#f5f5f5";
+            ctxS.fillRect(0,0, 1280, 800);
+            
+            // Имитация окна браузера
+            ctxS.fillStyle = "white";
+            ctxS.shadowColor = "rgba(0,0,0,0.1)";
+            ctxS.shadowBlur = 20;
+            ctxS.fillRect(100, 100, 1080, 600);
+            
+            // Текст-заглушка
+            ctxS.shadowBlur = 0;
+            ctxS.fillStyle = "#333";
+            ctxS.font = "bold 40px sans-serif";
+            ctxS.fillText("Яндекс Телемост", 140, 180);
+            
+            // Наша плашка уведомления (расширение в действии)
+            ctxS.fillStyle = "#2c3e50";
+            ctxS.beginPath();
+            ctxS.roundRect(400, 300, 480, 100, 12);
+            ctxS.fill();
+            
+            // Текст на плашке
+            ctxS.fillStyle = "white";
+            ctxS.font = "30px sans-serif";
+            ctxS.fillText("⚠️ Запись не включена!", 480, 360);
+            
+            // Красная точка
+            ctxS.fillStyle = "#e74c3c";
+            ctxS.beginPath();
+            ctxS.arc(440, 350, 15, 0, Math.PI*2);
+            ctxS.fill();
+
+            // --- РИСУЕМ ПЛИТКУ (Promo Tile) ---
+            const ctxP = document.getElementById('promoCanvas').getContext('2d');
+            
+            // Темный фон
+            ctxP.fillStyle = "#2c3e50";
+            ctxP.fillRect(0,0, 440, 280);
+            
+            // Логотип
+            ctxP.fillStyle = "white";
+            ctxP.font = "bold 48px sans-serif";
+            ctxP.textAlign = "center";
+            ctxP.fillText("YTIROK", 220, 130);
+            
+            // Слоган
+            ctxP.font = "20px sans-serif";
+            ctxP.fillStyle = "#ecf0f1";
+            ctxP.fillText("Напоминалка записи", 220, 170);
+
+            // Индикатор
+            ctxP.fillStyle = "#e74c3c";
+            ctxP.beginPath();
+            ctxP.arc(220, 70, 12, 0, Math.PI*2);
+            ctxP.fill();
+        }
+
+        function download(canvasId, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = document.getElementById(canvasId).toDataURL();
+            link.click();
+        }
+
+        window.onload = draw;
+    </script>
+</body>
+</html>
